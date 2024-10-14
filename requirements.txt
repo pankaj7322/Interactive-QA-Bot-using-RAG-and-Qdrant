@@ -1,0 +1,5 @@
+streamlit
+PyPDF2
+qdrant-client
+cohere
+sentence-transformers
