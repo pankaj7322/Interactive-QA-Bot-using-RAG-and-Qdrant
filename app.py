@@ -60,9 +60,9 @@ def generate_response(query, retrieved_docs):
         context = " ".join([result.payload["text"] for result in retrieved_docs])
         response = cohere_client.generate(
             model='command-xlarge-nightly',
-            prompt=f"Answer the question based on the context below.\n\nContext: {context}\n\n---\n\nQuestion: {query}\nAnswer:",
-            max_tokens=100,
-            temperature=0.9
+            prompt=f"Answer the question based on the context below in complete 100 words only.\n\nContext: {context}\n\n---\n\nQuestion: {query}\nAnswer:",
+            temperature=0.5,
+            max_tokens=100
         )
         return response.generations[0].text.strip()
 
