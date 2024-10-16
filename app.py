@@ -12,21 +12,25 @@ qdrant_client = QdrantClient(
 )
 cohere_client = cohere.Client('VCNuTSP7TApcHO6k7xwpiyED7AjDJRRRgK9ASpR7')
 
-# Define vector size and collection name
 def reset_collection():
     """Delete the existing collection if it exists and create a new one."""
     collections_info = qdrant_client.get_collections()
     existing_collections = [col.name for col in collections_info.collections]
-    
+
     # Delete existing collection if it exists
     if 'pdf_collection' in existing_collections:
         qdrant_client.delete_collection('pdf_collection')
-    
+        st.success("Existing collection deleted.")
+
     # Create a new collection
-    qdrant_client.create_collection(
-        collection_name='pdf_collection',
-        vectors_config=VectorParams(size=4096, distance=models.Distance.COSINE)
-    )
+    try:
+        qdrant_client.create_collection(
+            collection_name='pdf_collection',
+            vectors_config=VectorParams(size=4096, distance=models.Distance.COSINE)
+        )
+        st.success("New collection created.")
+    except Exception as e:
+        st.warning(f"Could not create collection: {e}")
 
 def embed_and_store(text):
     """Embed the text and store it in the Qdrant collection."""
@@ -65,8 +69,9 @@ def generate_response(query, retrieved_docs):
 st.title("Interactive QA Bot")
 st.subheader("Upload PDF documents and ask questions")
 
-# Reset the collection
-reset_collection()
+# Button to reset the collection
+if st.button("Reset Collection"):
+    reset_collection()
 
 uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
 
