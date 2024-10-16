@@ -1,6 +1,6 @@
 import streamlit as st
 from PyPDF2 import PdfReader
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 from qdrant_client.models import VectorParams
 import cohere
 import uuid
@@ -13,22 +13,19 @@ qdrant_client = QdrantClient(
 cohere_client = cohere.Client('VCNuTSP7TApcHO6k7xwpiyED7AjDJRRRgK9ASpR7')
 
 # Define vector size and collection name
-vector_size = 4096  # Set to your Cohere model's output size
-collection_name = "pdf_collection"  # Use a fixed collection name
-
 def reset_collection():
     """Delete the existing collection if it exists and create a new one."""
     collections_info = qdrant_client.get_collections()
     existing_collections = [col.name for col in collections_info.collections]
     
     # Delete existing collection if it exists
-    if collection_name in existing_collections:
-        qdrant_client.delete_collection(collection_name)
+    if 'pdf_collection' in existing_collections:
+        qdrant_client.delete_collection('pdf_collection')
     
     # Create a new collection
     qdrant_client.create_collection(
-        collection_name=collection_name,
-        vectors_config=VectorParams(size=vector_size, distance="Cosine")
+        collection_name='pdf_collection',
+        vectors_config=VectorParams(size=4096, distance=models.Distance.COSINE)
     )
 
 def embed_and_store(text):
@@ -36,17 +33,15 @@ def embed_and_store(text):
     embeddings = cohere_client.embed(texts=[text]).embeddings[0]
     point_id = str(uuid.uuid4())  # Generate a UUID for the point ID
     qdrant_client.upsert(
-        collection_name=collection_name,
-        points=[
-            {"id": point_id, "vector": embeddings, "payload": {"text": text}}
-        ]
+        collection_name='pdf_collection',
+        points=[{"id": point_id, "vector": embeddings, "payload": {"text": text}}]
     )
 
 def retrieve_documents(query, top_k=5):
     """Retrieve documents based on the query from the collection."""
     query_embedding = cohere_client.embed(texts=[query]).embeddings[0]
     results = qdrant_client.search(
-        collection_name=collection_name,
+        collection_name='pdf_collection',
         query_vector=query_embedding,
         limit=top_k
     )
