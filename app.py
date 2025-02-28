@@ -7,8 +7,8 @@ import uuid
 
 # Initialize Qdrant and Cohere clients
 qdrant_client = QdrantClient(
-    url="https://e4cd4dd7-d47d-48e7-bb13-b5c64d2fb31e.europe-west3-0.gcp.cloud.qdrant.io:6333", 
-    api_key="WH0m9VwXQ7c4JRqjNR-1UvCdV0HudwJWw67Yqq7T2SyxF0Gd1itcww",
+    url="https://feab851f-4147-4a1c-9016-21ec26877b04.europe-west3-0.gcp.cloud.qdrant.io:6333",
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIiwiZXhwIjoxNzQ1ODY4MDA0fQ.XcC726MOqr6Z34Ue4nuwHj173HrcaLJL58-Ms7VqgVQ",
 )
 cohere_client = cohere.Client('VCNuTSP7TApcHO6k7xwpiyED7AjDJRRRgK9ASpR7')
 
