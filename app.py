@@ -64,6 +64,8 @@ def generate_response(query, retrieved_docs):
             max_tokens=100
         )
         return response.text.strip()
+    
+    
 
 # Streamlit UI
 st.title("Interactive QA Bot")
