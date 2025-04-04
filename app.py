@@ -7,10 +7,10 @@ import uuid
 
 # Initialize Qdrant and Cohere clients
 qdrant_client = QdrantClient(
-    url="https://e4cd4dd7-d47d-48e7-bb13-b5c64d2fb31e.europe-west3-0.gcp.cloud.qdrant.io:6333", 
-    api_key="WH0m9VwXQ7c4JRqjNR-1UvCdV0HudwJWw67Yqq7T2SyxF0Gd1itcww",
+    url="https://cb6bb304-967d-4cb2-821a-8b66a9adc943.europe-west3-0.gcp.cloud.qdrant.io:6333", 
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.3BHvg0Zl5ylf1Zi9MSqKNk2LBjBm5XfO9TQTw0qQr3o",
 )
-cohere_client = cohere.Client('VCNuTSP7TApcHO6k7xwpiyED7AjDJRRRgK9ASpR7')
+cohere_client = cohere.Client('GJ7ahzxVR1uJ1A517IowWn0K14jBZ0K1ag4SFYGz')
 
 def reset_collection():
     """Delete the existing collection if it exists and create a new one."""
@@ -57,13 +57,13 @@ def generate_response(query, retrieved_docs):
         return "I'm sorry, I couldn't find any relevant information."
     else:
         context = " ".join([result.payload["text"] for result in retrieved_docs])
-        response = cohere_client.generate(
-            model='command-xlarge-nightly',
-            prompt=f"Answer the question based on the context below in complete 100 words only.\n\nContext: {context}\n\n---\n\nQuestion: {query}\nAnswer:",
+        response = cohere_client.chat(
+            model='command-r7b-12-2024',
+            message=f"Answer the question based on the context below in complete 100 words only.\n\nContext: {context}\n\n---\n\nQuestion: {query}\nAnswer:",
             temperature=0.5,
             max_tokens=100
         )
-        return response.generations[0].text.strip()
+        return response.text.strip()
 
 # Streamlit UI
 st.title("Interactive QA Bot")
