@@ -68,7 +68,7 @@ def generate_response(query, retrieved_docs):
     
 
 # Streamlit UI
-st.title("Interactive QA Bot")
+st.title("AI chatbot for answering queries from document")
 st.subheader("Upload PDF documents and ask questions")
 
 # Button to reset the collection
