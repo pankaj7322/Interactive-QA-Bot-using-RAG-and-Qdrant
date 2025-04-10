@@ -61,7 +61,7 @@ def generate_response(query, retrieved_docs):
             model='command-r7b-12-2024',
             message=f"Answer the question based on the context below in complete 100 words only.\n\nContext: {context}\n\n---\n\nQuestion: {query}\nAnswer:",
             temperature=0.5,
-            max_tokens=100
+            max_tokens=1000
         )
         return response.text.strip()
     
