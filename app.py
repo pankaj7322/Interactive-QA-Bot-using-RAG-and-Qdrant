@@ -59,7 +59,7 @@ def generate_response(query, retrieved_docs):
         context = " ".join([result.payload["text"] for result in retrieved_docs])
         response = cohere_client.chat(
         model='command-r7b-12-2024',
-        message=f"Answer this question using ONLY the documents or context provided. If the answer is not in the document context, say you don't know.\n\nContext:\n{context}\n\nQuestion: {query}\nAnswer:",         
+        message=f"Answer this question strictly using ONLY the documents or context provided. If the answer is not in the document context, say you don't know.\n\nContext:\n{context}\n\nQuestion: {query}\nAnswer:",         
         temperature=0.5,
         max_tokens=1000
         )
